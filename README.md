@@ -34,5 +34,5 @@ Tor2web https://www.tor2web.org - is a software project to allow Tor hidden serv
 ### Disclaimer
 
 ***Onion network is NOT 100% bulletproof: https://www.wired.com/2014/12/fbi-metasploit-tor.
-I made this tool just for educational use only. Please understands that there is no warranty for this free software. Please note also that using Tor2Web is NOT secure from victim's point of view: the point of Tor is that users can connect without being eavesdropped on, and going through the clearnet (Tor2Web), even with https, seriously cripples the efforts made to protect users! But, again, from an attacking point who gives af ?***
+I made this tool just for educational use only. Please understands that there is no warranty for this free software. Please note also that using Tor2Web is NOT secure from victim's point of view: the point of Tor is that users can connect without being eavesdropped on, and going through the clearnet (Tor2Web), even with https, seriously cripples the efforts made to protect users!
 
