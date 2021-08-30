@@ -8,7 +8,7 @@
 
 -> Generate non-staged payload (python/meterpreter_reverse_http)
 
--> Rewrite url using Tor2Web: a final extension .ws will be added, so url becomes available outside tor network
+-> Convert url using Tor2Web: a final extension .ws will be added, so url becomes available outside tor network
 
 -> Generate batch .rc file for msfconsole
 
