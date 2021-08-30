@@ -1,6 +1,7 @@
-# Poiana <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Blue_Python_3.6%2B_Shield_Badge.svg" />
+# Poiana
 
 **Reverse shell on TOR using hidden services**
+
 
 ### Features
 
@@ -20,7 +21,6 @@
 
 `$ python3 poiana.py`
  
-
 ## Why this project?
 
 ### Reverse Shell on hidden services through Tor are sexy
