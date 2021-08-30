@@ -16,6 +16,8 @@
 
 ### Usage
 
+NOTE: You need to edit your torrc file and insert: `ControlPort 9151`
+
 `$ git clone https://github.com/CalfCrusher/Poiana/`
 
 `$ cd Poiana && pip3 install -r requirements.txt`
