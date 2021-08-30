@@ -4,7 +4,7 @@
 
 ### Features
 
--> Creation of a hidden service
+-> Create a hidden service
 
 -> Generate non-staged payload (python/meterpreter_reverse_http)
 
