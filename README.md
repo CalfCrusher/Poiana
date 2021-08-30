@@ -1,4 +1,4 @@
-# Reverse shell on TOR using hidden services
+# Reverse shell on TOR network using hidden services
 
 ![](https://github.com/CalfCrusher/Poiana/blob/main/poiana.gif)
 
