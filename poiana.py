@@ -83,7 +83,7 @@ def stem():
             print(" * Creating hidden service in %s" % hidden_service_dir)
             result = controller.create_hidden_service(hidden_service_dir, 80, target_port=5000)
         except:
-            print("[!] Unable to connect ! Is tor running? Exiting..")
+            print("[!] Unable to connect ! Is tor running and dir writable? Exiting..")
             exit(0)
 
         # The hostname is only available when we can read the hidden service
