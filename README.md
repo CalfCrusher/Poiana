@@ -16,15 +16,15 @@
 
 ### Usage
 
-NOTE: You need to edit your torrc file and insert: `ControlPort 9151`
-
-I didn't want to insert this automatic 'feature' in my tool because of course you need to be root to edit torrc. In this way this script can run just as normal user. Remember do NOT run/trust scripts from others, discover some backdoor in fancy scripts is not rare unfortunately! Take care of source code, always :)
-
 `$ git clone https://github.com/CalfCrusher/Poiana/`
 
 `$ cd Poiana && pip3 install -r requirements.txt`
 
 `$ python3 poiana.py`
+
+NOTE: You need to edit your torrc file and insert: `ControlPort 9151`
+
+I didn't want to insert this automatic 'feature' in my tool because of course you need to be root to edit torrc. In this way this script can run just as normal user. Remember do NOT run/trust scripts from others, discover some backdoor in fancy scripts is not rare unfortunately! Take care of source code, always :)
 
 *Be careful if the script fails to deleting `hidden_service_data` for some reasons. Script won't start correctly if this dir is already present before running tool. I'm trying to fix this behaviour, also because i want to add the (optional) feature to have persistence onion url and maybe the option to make a non-ephemeral hidden service (a hidden service without touching disk)*
  
