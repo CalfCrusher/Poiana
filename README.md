@@ -29,7 +29,7 @@ NOTE: You need to edit your torrc file and insert: `ControlPort 9151`
 ### Reverse Shell on hidden services through Tor are sexy
 
 One of the weaknesses of the attackers when they're exfiltrating compromised information is that they
-expose part of their technological infrastructure during the process. In this sense, the Tor network offers the possibility of making services in a machine accessible as hidden services, by taking advantage of the anonymity it offers and thereby preventing the real location of the machine from being exposed. Using Tor2Web, victim doesn't need to have tor or ncat compiled with ssl on machine. So, using Tor2Web our victim can establish a connection to our hidden service. To me it's really an interesting way to pop a reverse shell quite anonymously.
+expose part of their technological infrastructure during the process. In this sense, the Tor network offers the possibility of making services in a machine accessible as hidden services, by taking advantage of the anonymity it offers and thereby preventing the real location of the machine from being exposed. Using Tor2Web, victim doesn't need to have tor or ncat. So, using Tor2Web our victim can establish a connection to our hidden service. To me it's really an interesting way to pop a reverse shell quite anonymously.
 
 ### Tor2Web
 
