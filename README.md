@@ -42,7 +42,5 @@ Tor2web https://www.tor2web.org - is a software project to allow Tor hidden serv
 **Onion network is NOT 100% bulletproof: https://www.wired.com/2014/12/fbi-metasploit-tor.
 I made this tool just for educational use only. I'm not responsible for the consequences of illegal use. Please understands also that there is no warranty for this free software. Please note also that using Tor2Web is NOT secure from victim's point of view: the point of Tor is that users can connect without being eavesdropped on, and going through the clearnet (Tor2Web), even with https, seriously cripples the efforts made to protect users!**
 
-TO DO:
-
-*Be careful if the script fails to deleting hidden_service_data for some reasons. Script won't start correctly if this dir is already present before running tool. I'm trying to fix this behaviour, also because i want to add the (optional) feature to have persistence onion url and maybe the option to make a non-ephemeral hidden service -that's a hidden service without touching disk at all-
+*Be careful if the script fails to deleting hidden_service_data for some reasons. Script won't start correctly if this dir is already present before running tool. I'm trying to fix this behaviour, also because i want to add the (optional) feature to have persistence onion url and maybe the option to make a non-ephemeral hidden service (a hidden service without touching disk)*
 
