@@ -17,6 +17,7 @@
 ### Usage
 
 NOTE: You need to edit your torrc file and insert: `ControlPort 9151`
+I din't want to insert this automatic 'feature' in script because of course you need to be root to edit torrc. In this way script can run just normal user. Remember do NOT run/trust script from others, putting some backdoor in script is not new, take care of source code always :)
 
 `$ git clone https://github.com/CalfCrusher/Poiana/`
 
