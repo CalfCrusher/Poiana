@@ -22,7 +22,7 @@
 
 `$ python3 poiana.py`
 
-NOTE: You need to edit your torrc file and insert: `ControlPort 9151`
+NOTE: You need to edit your torrc file and insert: `ControlPort 9151` as this is the port to which Tor will listen for any communication from applications talking to the Tor controller.
 
 I didn't want to insert this automatic 'feature' in my tool because of course you need to be root to edit torrc. In this way this script can run just as normal user. Remember do NOT run/trust scripts from others, discover some backdoor in fancy scripts is not rare unfortunately! Take care of source code, always :)
 
